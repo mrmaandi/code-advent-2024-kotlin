@@ -1,66 +1,34 @@
 package day1
 
+import kotlin.math.abs
+
 class Day1 {
     companion object {
-        fun run(): Int {
-            // 1. Read file into 2 lists
+        fun part1(): Int {
             val (list1, list2) = getLocations()
-
-            // 2. Sort the lists
-            list1.sort()
-            list2.sort()
-
-            // 3. Reduce pair distances
-            var i = 0
-            var sum = 0
-
-            while (i < list1.size) {
-                val distance = if (list1[i] > list2[i]) list1[i] - list2[i] else list2[i] - list1[i]
-                sum += distance
-                i++
-            }
-            return sum
+            return list1.sorted().zip(list2.sorted()).sumOf { (a, b) -> abs(a - b) } // 1189304
         }
 
-        fun similarity(): Int {
+        fun part2(): Int {
             val (list1, list2) = getLocations()
-
-            // 1. Compute occurrences in second list
-            val occurrences = mutableMapOf<Int, Int>()
-            var i = 0
-            while (i < list2.size) {
-                val key = list2[i]
-                if (!occurrences.containsKey(key)) {
-                    occurrences[key] = 1
-                } else {
-                    occurrences.computeIfPresent(key) { _, cur -> cur+1 }
-                }
-                i++
-            }
-
-            // 2. Compute similarity
-            var similarity = 0
-            list1.forEach {
-                similarity += it * occurrences.getOrDefault(it, 0)
-            }
-            return similarity
+            val occurrences = list2.groupingBy { it }.eachCount().toMutableMap()
+            return list1.sumOf { it * occurrences.getOrDefault(it, 0) }
         }
 
         private fun getLocations(): LocationIds {
             val list1 = mutableListOf<Int>()
             val list2 = mutableListOf<Int>()
 
-            this::class.java.getResourceAsStream("input.txt")
+            this::class.java.getResourceAsStream("input.txt")!!
                 .bufferedReader()
-                .forEachLine {
-                    run {
-                        val split = it.split("   ")
+                .useLines { lines ->
+                    lines.forEach { line ->
+                        val split = line.split("   ")
                         list1.add(split[0].toInt())
                         list2.add(split[1].toInt())
                     }
                 }
-
-            return LocationIds(list1, list2)
+            return LocationIds(list1, list2) // 24349736
         }
     }
 }
