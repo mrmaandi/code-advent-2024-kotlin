@@ -6,7 +6,7 @@ class Day1 {
     companion object {
         fun part1(): Int {
             val (list1, list2) = getLocations()
-            return list1.sorted().zip(list2.sorted()).sumOf { (a, b) -> abs(a - b) } // 1189304
+            return list1.sorted().zip(list2.sorted()).sumOf { (a, b) -> abs(a - b) }
         }
 
         fun part2(): Int {
@@ -15,20 +15,15 @@ class Day1 {
             return list1.sumOf { it * occurrences.getOrDefault(it, 0) }
         }
 
-        private fun getLocations(): LocationIds {
-            val list1 = mutableListOf<Int>()
-            val list2 = mutableListOf<Int>()
-
-            this::class.java.getResourceAsStream("input.txt")!!
+        private fun getLocations(): Pair<List<Int>, List<Int>> {
+            return this::class.java.getResourceAsStream("input.txt")!!
                 .bufferedReader()
                 .useLines { lines ->
-                    lines.forEach { line ->
-                        val split = line.split("   ")
-                        list1.add(split[0].toInt())
-                        list2.add(split[1].toInt())
-                    }
+                    lines.map { line ->
+                        val (left, right) = line.split("   ").map { it.toInt() }
+                        left to right
+                    }.unzip()
                 }
-            return LocationIds(list1, list2) // 24349736
         }
     }
 }
