@@ -1,8 +1,8 @@
-package day1
+package day01
 
 import kotlin.math.abs
 
-class Day1 {
+class Day01 {
     companion object {
         fun part1(): Int {
             val (list1, list2) = getLocations()

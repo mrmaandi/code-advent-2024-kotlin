@@ -1,6 +1,7 @@
-import day1.Day1
+import day01.Day01
+import day02.Day02
 
 fun main(args: Array<String>) {
-    println(Day1.part1())
-    println(Day1.part2())
+    //println(Day02.part1())
+    println(Day02.part2())
 }
